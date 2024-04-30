@@ -2,8 +2,20 @@ import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
 import { reverseString } from './lib/native';
+import AudioRecorder from './src/recoder';
+import AppCamera from './src/camera';
 
 export default function App() {
+  return (
+    <View style={styles.container}>
+      <AppCamera/>
+      {/* <AudioRecorder/> */}
+    </View>
+  );
+}
+
+
+const reverseStrCom = () => {
   const [value, setValue] = useState('')
   const [reversed, setReversed]  = useState(null)
 
@@ -22,6 +34,7 @@ export default function App() {
       />
       {reversed !== null && <><Text style={styles.text}>Result: {reversed}</Text></>}
       <StatusBar style="auto" />
+      <AudioRecorder/>
     </View>
   );
 }
