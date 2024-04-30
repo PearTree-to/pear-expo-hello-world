@@ -7,7 +7,7 @@ try{
   const fs = require('bare-fs')
 
   const readFileRPC = () => {
-    fs.readFile('file.txt', 'utf8', (err, data) => {
+    fs.readFile('./file.txt', 'utf8', (err, data) => {
       if (err) {
           console.error('Error reading file:', err);
           return 'Error';
@@ -15,6 +15,8 @@ try{
       return data
     });
   }
+  
+  console.log(readFileRPC())
 
 }catch(e){
   console.log('Error: ', e)

@@ -49,6 +49,7 @@ target_link_libraries(
 if(target MATCHES "ios" OR target MATCHES "android")
   link_bare_module(hello_bare bare-pipe)
   link_bare_module(hello_bare bare-tty)
+  link_bare_module(hello_bare bare-fs)
 endif()
 
 if(target MATCHES "android")
