@@ -3,13 +3,11 @@ import { useState } from 'react';
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
 import { reverseString } from './lib/native';
 import AudioRecorder from './src/recoder';
-import AppCamera from './src/camera';
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <AppCamera/>
-      {/* <AudioRecorder/> */}
+      <AudioRecorder/>
     </View>
   );
 }
