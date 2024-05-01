@@ -4,7 +4,12 @@ import { Audio } from 'expo-av';
 
 export default function AudioRecorder() {
   const [recording, setRecording] = useState();
+  const [recordingChunks, setRecordingChunks] = useState([]);
   const [permissionResponse, requestPermission] = Audio.usePermissions();
+
+  const onRecordingStatusUpdate = async (data) => {
+      console.log(data, 'data')
+  }
 
   async function startRecording() {
     try {
@@ -23,7 +28,7 @@ export default function AudioRecorder() {
       });
 
       console.log('Starting recording..');
-      const { recording } = await Audio.Recording.createAsync( Audio.RecordingOptionsPresets.HIGH_QUALITY);
+      const { recording } = await Audio.Recording.createAsync( Audio.RecordingOptionsPresets.HIGH_QUALITY, onRecordingStatusUpdate, 1000 );
       setRecording(recording);
       console.log('Recording started');
     } catch (err) {
