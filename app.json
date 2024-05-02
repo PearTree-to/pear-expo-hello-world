@@ -17,7 +17,7 @@
       "bundleIdentifier": "to.holepunch.hellopear.app"
     },
     "android": {
-      "permissions": ["RECORD_AUDIO"],
+      "permissions": ["RECORD_AUDIO","READ_EXTERNAL_STORAGE","WRITE_EXTERNAL_STORAGE","INTERNET","ACCESS_NETWORK_STATE","WAKE_LOCK","MEDIA_CONTENT_CONTROL"],
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"

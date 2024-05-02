@@ -2,24 +2,25 @@ require('./runtime')
 
 const RPC = require('tiny-buffer-rpc')
 const ce = require('compact-encoding')
-try{
-  console.log(Bare.arch, 'Bare.arch')
-  const fs = require('bare-fs')
+const fs = require('bare-fs')
+console.log('Bare.arch>>>', Bare.arch, 'Bare.platform>>>' , Bare.platform)
 
-  const readFileRPC = () => {
-    fs.readFile('./file.txt', 'utf8', (err, data) => {
-      if (err) {
-          console.error('Error reading file:', err);
-          return 'Error';
-      }
-      return data
-    });
+ 
+const readFileRPC = (filePath) => {
+  try{
+    const data = fs.readFileSync(filePath);
+    console.log('File content:', data.buffer);
+  }catch(e){
+    console.log('File read Error :', e);
   }
-  
-  console.log(readFileRPC())
+}
 
-}catch(e){
-  console.log('Error: ', e)
+
+function removeFilePrefix(uri) {
+  if (uri.startsWith('file://')) {
+    return uri.substring(7);
+  }
+  return uri;
 }
 
 const rpc = new RPC(HelloBare.sendMessage)
@@ -28,8 +29,13 @@ HelloBare.onMessage = rpc.recv.bind(rpc)
 rpc.register(0, {
   request: ce.string,
   response: ce.string,
-  onrequest: message => message.split('').reverse().join('')
-  // onrequest: message => readFileRPC()
+  onrequest: message => {
+    console.log(message, 'message');
+    const path = removeFilePrefix(message)
+    readFileRPC(path)
+
+    return message.split('').reverse().join('');
+  } 
 })
 
 // keep the event loop alive

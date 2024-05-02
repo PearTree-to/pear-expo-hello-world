@@ -1,15 +1,18 @@
 import { useState } from 'react';
 import { View, StyleSheet, Button } from 'react-native';
 import { Audio } from 'expo-av';
+import { reverseString } from '../lib/native';
+// import { reverseString } from './lib/native';
 
 export default function AudioRecorder() {
   const [recording, setRecording] = useState();
   const [recordingChunks, setRecordingChunks] = useState([]);
   const [permissionResponse, requestPermission] = Audio.usePermissions();
 
-  const onRecordingStatusUpdate = async (data) => {
-      console.log(data, 'data')
-  }
+
+  const onRecordingStatusUpdate = async (status) => {
+    
+  };
 
   async function startRecording() {
     try {
@@ -46,11 +49,12 @@ export default function AudioRecorder() {
       }
     );
     const uri = recording.getURI();
-    console.log('Recording stopped and stored at', uri);
+    // console.log('Recording stopped and stored at', uri);
+    reverseString(uri)
   }
 
   return (
-    <View style={styles.container}>
+    <View style={styles.recoder}>
       <Button
         title={recording ? 'Stop Recording' : 'Start Recording'}
         onPress={recording ? stopRecording : startRecording}
@@ -60,10 +64,10 @@ export default function AudioRecorder() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    backgroundColor: '#ecf0f1',
-    padding: 10,
-  },
+    recoder: {
+        position: 'absolute',
+        bottom: 20,  
+        width: '100%',  
+        alignItems: 'center',
+    },
 });
