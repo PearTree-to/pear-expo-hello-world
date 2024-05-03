@@ -1,20 +1,36 @@
 import { StatusBar } from 'expo-status-bar';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
 import { reverseString } from './lib/native';
 import AudioRecorder from './src/recoder';
-import LoadAudioFile from './src/audioFile';
 
 export default function App() {
+  const textInputRef = useRef(null);
+  const updateTextInput = (transcript) => {
+    if (textInputRef.current) {
+      // we need to collect the cureent values from `TextInput`
+
+      const currentValue = textInputRef.current?._transcript || '';
+      const newValue = currentValue + transcript;
+      textInputRef.current._transcript = newValue;
+      textInputRef.current.setNativeProps({ text: newValue });
+    }
+  };
+
+
+  // setInterval(()=>{
+  //   updateTextInput('Hello ');
+  // }, 1000)
+
   return (
     <View style={styles.container}>
       <TextInput
+        ref={textInputRef}
         style={styles.textArea}
         multiline={true}
         placeholder="Type something..."
       />
-      <AudioRecorder/>
-      {/* <LoadAudioFile/> */}
+      <AudioRecorder updateTextInput={updateTextInput}/>
     </View>
   );
 }

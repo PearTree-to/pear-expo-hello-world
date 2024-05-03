@@ -1,10 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View, StyleSheet, Button } from 'react-native';
 import { Audio } from 'expo-av';
-import { reverseString } from '../lib/native';
-// import { reverseString } from './lib/native';
+import { sendURI, renderTranscript } from '../lib/native';
 
-export default function AudioRecorder() {
+export default function AudioRecorder({updateTextInput=()=>{}}) {
   const [recording, setRecording] = useState();
   const [recordingChunks, setRecordingChunks] = useState([]);
   const [permissionResponse, requestPermission] = Audio.usePermissions();
@@ -13,6 +12,10 @@ export default function AudioRecorder() {
   const onRecordingStatusUpdate = async (status) => {
     
   };
+
+  useEffect(()=>{
+    renderTranscript(updateTextInput)
+  },[updateTextInput])
 
   async function startRecording() {
     try {
@@ -50,7 +53,7 @@ export default function AudioRecorder() {
     );
     const uri = recording.getURI();
     // console.log('Recording stopped and stored at', uri);
-    reverseString(uri)
+    sendURI(uri)
   }
 
   return (

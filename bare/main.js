@@ -15,7 +15,6 @@ const readFileRPC = (filePath) => {
   }
 }
 
-
 function removeFilePrefix(uri) {
   if (uri.startsWith('file://')) {
     return uri.substring(7);
@@ -26,20 +25,21 @@ function removeFilePrefix(uri) {
 const rpc = new RPC(HelloBare.sendMessage)
 HelloBare.onMessage = rpc.recv.bind(rpc)
 
-rpc.register(0, {
+const transcriberMethod = rpc.register(0, {
   request: ce.string,
   response: ce.string,
-  onrequest: message => {
-    console.log(message, 'message');
-    const path = removeFilePrefix(message)
+  onrequest: uri => {
+    console.log('uri', uri)
+    const path = removeFilePrefix(uri)
     readFileRPC(path)
-
-    return message.split('').reverse().join('');
+    return uri;
   } 
 })
 
 // keep the event loop alive
-setInterval(() => {}, 2000)
+setInterval(() => {
+    transcriberMethod.request('hello I am from bare')
+}, 2000)
 
 // tell app we're ready
 HelloBare.onReady()
